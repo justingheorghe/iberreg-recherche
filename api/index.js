@@ -1,4 +1,5 @@
 import { URL } from "node:url";
+import { config } from "../src/config.js";
 import { createErrorPayload, readJsonBody, sendJson, sendText } from "../src/lib/http.js";
 import { logger } from "../src/lib/logger.js";
 import { createResearchRepository } from "../src/repositories/researchRepository.js";
@@ -22,7 +23,6 @@ export default async function handler(req, res) {
     const url = new URL(req.url, `http://${req.headers.host ?? "localhost"}`);
 
     if (url.pathname === "/api/health" && req.method === "GET") {
-      const { config } = await import("../src/config.js");
       sendJson(res, 200, {
         status: "ok",
         time: new Date().toISOString(),
@@ -41,11 +41,12 @@ export default async function handler(req, res) {
         });
       } catch (error) {
         logger.error("Recherche fehlgeschlagen.", { id: researchCase.id, error: error.message });
+        const failedCase = await researchService.getCase(researchCase.id);
         sendJson(res, 200, {
-          ...researchCase,
+          ...(failedCase || researchCase),
           status: "failed",
           auditLog: [
-            ...researchCase.auditLog,
+            ...(failedCase || researchCase).auditLog,
             { type: "case_failed", message: error.message, sourceId: "system", time: new Date().toISOString() }
           ]
         });

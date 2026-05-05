@@ -55,6 +55,31 @@ export class FileResearchRepository {
   }
 }
 
+export class MemoryResearchRepository {
+  constructor() {
+    this.items = new Map();
+  }
+
+  async save(researchCase) {
+    const next = {
+      ...researchCase,
+      updatedAt: new Date().toISOString()
+    };
+    this.items.set(next.id, next);
+    return next;
+  }
+
+  async findById(id) {
+    return this.items.get(id) ?? null;
+  }
+
+  async list(limit = 50) {
+    return [...this.items.values()]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, limit);
+  }
+}
+
 export async function createResearchRepository() {
   if (config.databaseUrl) {
     try {
@@ -70,7 +95,14 @@ export async function createResearchRepository() {
     }
   }
 
-  const repository = new FileResearchRepository();
-  await repository.init();
-  return repository;
+  try {
+    const repository = new FileResearchRepository();
+    await repository.init();
+    return repository;
+  } catch (error) {
+    logger.warn("Datei-Persistenz nicht verfuegbar, nutze In-Memory-Speicher.", {
+      error: error.message
+    });
+    return new MemoryResearchRepository();
+  }
 }
