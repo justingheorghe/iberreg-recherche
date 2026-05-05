@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      EXTERNAL_LOOKUPS_ENABLED: "true"
+      CATASTRO_TIMEOUT_MS: 4500
+      RETENTION_DAYS: 30
+      DATA_FILE: /app/data/recherchen.jsonl
+    volumes:
+      - app-data:/app/data
+
+volumes:
+  app-data:

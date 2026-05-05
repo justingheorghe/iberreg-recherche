@@ -1,0 +1,10 @@
+node_modules
+.git
+.DS_Store
+.env
+data/*.jsonl
+coverage
+*.log
+dist
+react-ui/node_modules
+react-ui/dist

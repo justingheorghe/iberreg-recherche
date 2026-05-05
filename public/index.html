@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Deutschsprachige Legal-Tech-Webanwendung zur rechtmäßigen Recherche offizieller spanischer Immobilieninformationen."
+    />
+    <title>IberReg Recherche</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Startseite">
+          <span class="brand-mark" aria-hidden="true">IR</span>
+          <span>
+            <strong>IberReg Recherche</strong>
+            <small>Legal-Tech für spanische Immobilien</small>
+          </span>
+        </a>
+        <nav class="top-actions" aria-label="Ansicht">
+          <button class="ghost-button" id="new-search-button" type="button">Neue Recherche</button>
+          <button class="theme-button" id="theme-button" type="button" aria-pressed="false">Dunkel</button>
+        </nav>
+      </header>
+
+      <main>
+        <section class="search-band" aria-labelledby="search-title">
+          <div class="search-copy">
+            <p class="eyebrow">Offizielle Recherchewege</p>
+            <h1 id="search-title">Spanische Eigentümerinformationen transparent prüfen</h1>
+            <p>
+              Geben Sie eine Adresse oder Referencia Catastral ein. Die Anwendung trennt offizielle Daten,
+              öffentliche Indizien und unbestätigte Treffer.
+            </p>
+          </div>
+
+          <form class="search-form" id="search-form" novalidate>
+            <label for="address-input">Spanische Immobilienadresse</label>
+            <div class="search-row">
+              <input
+                id="address-input"
+                name="address"
+                autocomplete="street-address"
+                inputmode="search"
+                placeholder="z. B. Calle de Alcalá 48, Madrid, Madrid, España"
+                required
+              />
+              <button class="primary-button" id="submit-button" type="submit">Adresse prüfen</button>
+            </div>
+            <p class="legal-hint">Die Software nutzt ausschließlich legale und offizielle Recherchewege.</p>
+            <div class="examples" id="examples" aria-label="Beispieleingaben"></div>
+            <div class="form-error" id="form-error" role="alert" hidden></div>
+          </form>
+        </section>
+
+        <section class="status-strip" aria-label="Ampelsystem">
+          <div><span class="dot green"></span>Grün = offiziell bestätigt</div>
+          <div><span class="dot yellow"></span>Gelb = möglicher Treffer / prüfen</div>
+          <div><span class="dot red"></span>Rot = keine belastbare Bestätigung</div>
+        </section>
+
+        <section class="result-layout" id="result-layout" hidden>
+          <section class="owner-panel" aria-labelledby="owner-title">
+            <div>
+              <p class="eyebrow">Ergebnis</p>
+              <h2 id="owner-title">Eigentümerbewertung</h2>
+            </div>
+            <div class="owner-result" id="owner-result"></div>
+            <div class="export-actions" id="export-actions" hidden>
+              <span>Export der Rechercheübersicht</span>
+              <a class="secondary-button" id="csv-link" href="#">CSV</a>
+              <a class="secondary-button" id="pdf-link" href="#">PDF</a>
+            </div>
+          </section>
+
+          <section class="sources-panel" aria-labelledby="sources-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Quellen</p>
+                <h2 id="sources-title">Rechercheübersicht</h2>
+              </div>
+              <span class="case-status" id="case-status">Bereit</span>
+            </div>
+
+            <div class="source-section">
+              <h3>Offiziell verifizierte Daten</h3>
+              <div class="source-list" id="official-list"></div>
+            </div>
+            <div class="source-section">
+              <h3>Öffentlich auffindbare Indizien</h3>
+              <div class="source-list" id="indicator-list"></div>
+            </div>
+            <div class="source-section">
+              <h3>Nicht bestätigte Treffer</h3>
+              <div class="source-list" id="unconfirmed-list"></div>
+            </div>
+          </section>
+        </section>
+
+        <section class="info-grid" aria-label="Compliance und Glossar">
+          <article class="info-panel">
+            <h2>Rechtliche Grenzen</h2>
+            <ul>
+              <li>Keine Rechtsberatung.</li>
+              <li>Keine Garantie auf Vollständigkeit.</li>
+              <li>Personenbezogene Daten nur im gesetzlich zulässigen Rahmen.</li>
+              <li>Keine Speicherung sensibler Personendaten ohne Zweck und Rechtsgrundlage.</li>
+            </ul>
+          </article>
+          <article class="info-panel">
+            <h2>Glossar</h2>
+            <dl id="glossary"></dl>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
